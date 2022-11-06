@@ -21,21 +21,39 @@ function playRound(playerChoice, computerChoice) {
         return -1;
 }
 
-let score = 0;
+let pscore = 0;
+let cscore = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('form').onsubmit = () => {
-        const playerChoice = document.querySelector('#choice').value;
-        let result = playRound(playerChoice, getComputerChoice());
-        score += result;
-        if (result === 1)
-            document.querySelector('h3').innerHTML = 'You won!';
-        else if (result === -1)
-            document.querySelector('h3').innerHTML = 'You lose!';
-        else
-            document.querySelector('h3').innerHTML = 'Tie';
-            
-        document.querySelector('h1').innerHTML = score;
-        return false;
-    };
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const playerChoice = btn.textContent.toLowerCase();
+            let result = playRound(playerChoice, getComputerChoice())
+            const h3 = document.querySelector('h3');
+            if (result === 1) {
+                h3.textContent = 'You won!';
+                pscore++;
+                document.querySelector('#pscore').textContent = pscore;
+            }
+            else if (result === -1) {
+                h3.textContent = 'You lose.';
+                cscore++;
+                document.querySelector('#cscore').textContent = cscore;
+            }
+            else
+                h3.textContent = 'Tie.';
+
+            if (cscore === 5 || pscore === 5) {
+                h3.textContent = '';
+                if (cscore === 5)
+                    document.querySelector('#result').textContent = 'You lost the game.';
+                else
+                    document.querySelector('#result').textContent = 'You won the game!';
+                pscore = 0;
+                cscore = 0;
+            }
+        })  
+    })
+
+    
 })
